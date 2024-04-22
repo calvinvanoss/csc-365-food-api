@@ -1,6 +1,12 @@
 ### Example Flows
 
 #### Create Recipe flow
+Ken, a skilled nutritionist and chef, crafted a delectable low-calorie meal upon a client's request. Witnessing significant weight loss in the client after a month, Ken endeavors to showcase his culinary prowess by sharing the recipe.
+
+Initiating with a POST request to the `/recipes/` endpoint, Ken systematically adds ingredients through subsequent POST requests to the `/ingredients/` endpoint. 
+
+Having published his recipe online, Ken eagerly anticipates user feedback and ratings.
+
 
 
 #### Search for recipe flow
