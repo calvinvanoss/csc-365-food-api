@@ -13,3 +13,6 @@ A new vegan user wants to search for recipes.
 
 
 #### Rate recipe flow
+An existing user wants to rate a recipe which he had previously searched for and then cooked.
+- He first logs in with `POST users/login`
+- He then assigns a rating to the recipe he used with `POST ratings/{recipe_id}`
