@@ -25,6 +25,25 @@ Login existing user. <br />
 
 ### `/users/{user_id}` (POST)
 Update user profile.
+
+**Request**:
+
+```json
+[
+  {
+    "user_id": "integer"
+  }
+]
+```
+**Response**:
+
+```json
+{
+    "user_id": "integer",
+    "user_name": "string",
+    "password": "string"
+}
+```
 ### `/users/{user_id}` (GET)
 Retrieve information about a given user. <br />
 **Response**:
