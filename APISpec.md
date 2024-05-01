@@ -24,7 +24,7 @@ Login existing user. <br />
 ```
 
 ### `/users/{user_id}` (POST)
-Update user profile.
+Update user profile. <br />
 
 **Request**:
 
@@ -94,11 +94,29 @@ Retrieve information about a given recipe. <br />
         "recipe_name": "string",
         "ingredient_id": "integer",
         "recipe_instructions": "string",
-        "average_rating": "integer", /* Between 1 and 10 */
+        "average_rating": "integer" /* Between 1 and 10 */
     }
 ]
 ```
 
 ## Ratings
 ### `/ratings/{recipe_id}` (POST)
-User assigns rating to recipe.
+User assigns rating to recipe. <br />
+
+**Request**:
+
+```json
+[
+  {
+    "recipe_id": "integer",
+    "rating": "integer" , /* Between 1 and 10 */
+  }
+]
+```
+**Response**:
+
+```json
+{
+    "rating_id": "integer"
+}
+```
