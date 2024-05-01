@@ -8,7 +8,7 @@ Login existing user.
 ### `/users/{user_id}` (POST)
 Update user profile.
 ### `/users/{user_id}` (GET)
-Retrieve information about a given user.\n
+Retrieve information about a given user. <br />
 **Response**:
 
 ```json
