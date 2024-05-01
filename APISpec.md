@@ -9,14 +9,16 @@ Login existing user.
 Update user profile.
 ### `/users/{user_id}` (GET)
 Retrieve information about a given user.
-\Response:
+**Response**:
 
+```json
 [
     {
         "user_id": "integer",
         "user_name": "string"
     }
 ]
+```
 
 ## Ingredients
 ### `/ingredients/` (POST)
