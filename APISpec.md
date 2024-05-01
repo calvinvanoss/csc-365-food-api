@@ -5,6 +5,27 @@
 Create new user.
 ### `/users/login` (POST)
 Login existing user.
+**Request**:
+
+```json
+[
+  {
+    "user_name": "string",
+    "password": "string"
+  },
+  {
+    ...
+  }
+]
+```
+**Response**:
+
+```json
+{
+    "success": "boolean"
+}
+```
+
 ### `/users/{user_id}` (POST)
 Update user profile.
 ### `/users/{user_id}` (GET)
