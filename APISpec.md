@@ -2,7 +2,24 @@
 
 ## Users
 ### `/users/signup` (POST)
-Create new user.
+Create new user. <br />
+**Request**:
+
+```json
+[
+  {
+    "user_name": "string",
+    "password": "string"
+  }
+]
+```
+**Response**:
+
+```json
+{
+    "user_id": "integer"
+}
+```
 ### `/users/login` (POST)
 Login existing user. <br />
 **Request**:
