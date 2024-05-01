@@ -121,7 +121,26 @@ Retrieve information about a given ingredient.  <br />
 
 ## Recipes
 ### `/recipes/` (POST)
-Add a new recipe.
+Add a new recipe. <br />
+**Request**:
+
+```json
+[
+  {
+        "recipe_name": "string",
+        "ingredient_id": "integer",
+        "recipe_instructions": "string",
+        "average_rating": "integer" /* Between 1 and 10 */
+  }
+]
+```
+**Response**:
+
+```json
+{
+    "recipe_id": "integer"
+}
+```
 ### `/recipes/{recipe_id}` (GET)
 Retrieve information about a given recipe. <br />
 **Response**:
