@@ -4,7 +4,7 @@
 ### `/users/signup` (POST)
 Create new user.
 ### `/users/login` (POST)
-Login existing user.
+Login existing user. <br />
 **Request**:
 
 ```json
