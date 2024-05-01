@@ -62,7 +62,23 @@ Retrieve information about a given user. <br />
 ### `/ingredients/` (POST)
 Add a new ingredient.
 ### `/ingredients/{ingredient_id}` (GET)
-Retrieve information about a given ingredient.
+Retrieve information about a given ingredient.  <br />
+**Response**:
+
+```json
+[
+    {
+        "ingredient_id": "integer",
+        "ingredient_name": "string",
+        "vegetarian": "boolean",
+        "gluten-free": "boolean",
+        "vegan": "boolean",
+        "keto": "boolean",
+        "vegetarian": "boolean",
+        "allergies": "text"
+    }
+]
+```
 
 ## Recipes
 ### `/recipes/` (POST)
