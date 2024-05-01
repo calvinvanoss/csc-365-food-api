@@ -15,7 +15,8 @@ Retrieve information about a given user. <br />
 [
     {
         "user_id": "integer",
-        "user_name": "string"
+        "user_name": "string",
+        "password": "string"
     }
 ]
 ```
