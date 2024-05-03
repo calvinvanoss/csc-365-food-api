@@ -1,9 +1,13 @@
 ### Example Flows
 
 #### Create Recipe flow
-Ken, a skilled nutritionist and chef, crafted a delectable low-calorie meal upon a client's request. Witnessing significant weight loss in the client after a month, Ken endeavors to showcase his culinary prowess by sharing the recipe.
+Ken, a skilled nutritionist and chef, crafted a delectable vegetarian meal upon a client's request. Witnessing significant weight loss in the client after a month, Ken endeavors to showcase his culinary prowess by sharing the recipe.
 
-Initiating with a POST request to the `/recipes/` endpoint, Ken systematically adds ingredients through subsequent POST requests to the `/ingredients/` endpoint. 
+Ken creates an account with a POST request to the `/users/signup` endpoint.
+Ken creates a new recipe with a POST request to the `/recipes/:userId` endpoint.
+Ken adds ingredients through POST requests to the `/recipes/:id/ingredients` endpoint.
+Ken adds attributes through POST request to the `/ingredients/:id/attributes` endpoint.
+Anyone can now send a GET request to the `/recipes/:id` endpoint to view the recipe. 
 
 Having published his recipe online, Ken eagerly anticipates user feedback and ratings.
 

@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  name     String   @unique
+  password String
+  recipes  Recipe[]
+  ratings  Rating[]
+}
+
+model Recipe {
+  id                Int                @id @default(autoincrement())
+  name              String
+  instructions      String
+  userId            Int
+  user              User               @relation(fields: [userId], references: [id])
+  recipeIngredients RecipeIngredient[]
+  ratings           Rating[]
+}
+
+model RecipeIngredient {
+  recipeId     Int
+  ingredientId Int
+  recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+
+  @@id([recipeId, ingredientId])
+}
+
+model Ingredient {
+  id                   Int                   @id @default(autoincrement())
+  name                 String                @unique
+  recipeIngredients    RecipeIngredient[]
+  ingredientAttributes IngredientAttribute[]
+}
+
+model IngredientAttribute {
+  ingredientId Int
+  attributeId  Int
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+  attribute    Attribute  @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+
+  @@id([ingredientId, attributeId])
+}
+
+model Attribute {
+  id          Int                   @id @default(autoincrement())
+  name        String                @unique
+  ingredients IngredientAttribute[]
+}
+
+model Rating {
+  rating   Int
+  recipeId Int
+  userId   Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([recipeId, userId])
+}
