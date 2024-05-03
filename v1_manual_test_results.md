@@ -2,7 +2,7 @@
 Ken, a skilled nutritionist and chef, crafted a delectable vegetarian meal upon a client's request. Witnessing significant weight loss in the client after a month, Ken endeavors to showcase his culinary prowess by sharing the recipe.
 
 Ken creates an account with a POST request to the `/users/signup` endpoint.
-Ken creates a new recipe with a POST request to the `/recipes/:userId` endpoint.
+Ken creates a new recipe with a POST request to the `/recipes/:id` endpoint.
 Ken adds ingredients through POST requests to the `/recipes/:id/ingredients` endpoint.
 Ken adds attributes through POST request to the `/ingredients/:id/attributes` endpoint.
 Anyone can now send a GET request to the `/recipes/:id` endpoint to view the recipe. 
