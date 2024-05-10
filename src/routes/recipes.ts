@@ -146,15 +146,16 @@ recipesRouter.put("/:id/rate", async (req: Request, res: Response) => {
             id: parseInt(userId),
           },
         },
-        rating: rating,
+        rating: parseInt(rating),
       },
       update: {
-        rating: rating,
+        rating: parseInt(rating),
       },
     });
 
     res.json(result);
   } catch (error) {
+    console.log(error);
     res.json(error);
   }
 });

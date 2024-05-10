@@ -13,7 +13,7 @@ Having published his recipe online, Ken eagerly anticipates user feedback and ra
 ```bash
 # User signup
 curl -X POST -H "Content-Type: application/json" \
--d '{"name":"ken", "password":"password"}' \
+-d '{"name":"Ken", "password":"password"}' \
 http://localhost:3000/users/signup
 # response: 1
 ```
@@ -34,7 +34,7 @@ http://localhost:3000/recipes/1/ingredients
 ```bash
 # Add attributes to the ingredient
 curl -X POST -H "Content-Type: application/json" \
--d '{"attributeName":"Vegetarian"}' \
+-d '{"attributeName":"vegetarian"}' \
 http://localhost:3000/ingredients/1/attributes
 # response: 1
 ```
@@ -43,9 +43,9 @@ http://localhost:3000/ingredients/1/attributes
 curl http://localhost:3000/recipes/1
 # reponse: {
 #     "name":"Vegetarian Meal",
-#     "author":{"name":"ken","id":1},
+#     "author":{"name":"Ken","id":1},
 #     "instructions":"Step by step instructions",
-#     "ingredients":["Ingredient 1"],"attributes":["Vegetarian"],
+#     "ingredients":["Ingredient 1"],"attributes":["vegetarian"],
 #     "rating":null
 # }
 ```

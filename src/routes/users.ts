@@ -40,4 +40,25 @@ usersRouter.post("/signup", async (req: Request, res: Response) => {
   }
 });
 
+usersRouter.post("/login", async (req: Request, res: Response) => {
+  // login user
+  const { name, password } = req.body;
+
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        name,
+        password,
+      },
+    });
+    if (!user) {
+      res.json("Invalid login");
+      return;
+    }
+    res.json(user.id);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 export default usersRouter;

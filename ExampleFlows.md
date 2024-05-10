@@ -13,16 +13,22 @@ Having published his recipe online, Ken eagerly anticipates user feedback and ra
 
 
 
-#### Search for recipe flow
-A new vegan user wants to search for recipes.
-- She first signs up with a `POST users/signup`
-- She then updates her dietary restrictions to exclude animal products with `POST users/{user_id}`  
-- She calls a recipe search with `GET recipes/{recipe_id}`
-- The recipe search function calls a `GET users/{user_id}` to query excluding her dietary restrictions
-- She can then look through the returned recipes 
+#### Search for recipe by attribute flow
+Karen, a new vegetarian user wants to search for recipes that fits her dietary restrictions.
 
+She first signs up with a POST request to `/users/signup`.
+She then searches for vegetarian recipes with a GET request to `/attributes/:name`.
+She then looks at one she likes with a GET request to `/recipes/:id`.
+
+She now has all the info she needs to make this vegetarian recipe.
 
 #### Rate recipe flow
-An existing user wants to rate a recipe which he had previously searched for and then cooked.
-- He first logs in with `POST users/login`
-- He then assigns a rating to the recipe he used with `POST ratings/{recipe_id}`
+Kennedy, an existing user, wants to rate a recipe he recently tried.
+
+He would have previously signed up with `/users/login`.
+
+He first logs in with a POST request to `/users/login`.
+He then rates the recipe with a PUT request to `/recipes/:id/rate`.
+He can now view the rating with a GET request to `/recipes/:id`.
+
+Now his rating score will affect the overall rating displayed on that recipe.
