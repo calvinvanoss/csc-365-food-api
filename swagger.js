@@ -1,10 +1,14 @@
-const swaggerAutogen = require("swagger-autogen")();
+const swaggerAutogen = require("swagger-autogen")({openapi: "3.0.0"});
 
 const doc = {
   info: {
     title: "Recipe API",
   },
-  host: process.env.RENDER_EXTERNAL_HOSTNAME || "localhost:3000",
+ servers: [
+    {
+      url: process.env.RENDER_EXTERNAL_URL || "http://localhost:3000",
+    },
+ ]
 };
 
 const outputFile = "./swagger.json";
