@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "format": "eslint . --fix",
     "build": "npm ci && npx prisma db push && tsc",
-    "start": "node dist/app.js",
+    "start": "node dist/src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
