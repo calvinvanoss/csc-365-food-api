@@ -1,0 +1,296 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "My API",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/users/{id}": {
+        "get": {
+          "summary": "get recipes associated with given user",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "The user ID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The list of recipes"
+            },
+            "400": {
+              "description": "Error message"
+            }
+          }
+        }
+      },
+      "/users/signup": {
+        "post": {
+          "summary": "signup user",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "The ID of the new user"
+            },
+            "400": {
+              "description": "Error message"
+            }
+          }
+        }
+      },
+      "/recipes/{id}": {
+        "get": {
+          "summary": "get ingredients, attributes, and average rating of recipe",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "The recipe ID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The recipe"
+            },
+            "400": {
+              "description": "Error message"
+            }
+          }
+        },
+        "post": {
+          "summary": "create recipe",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "The user ID"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "instructions": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "The ID of the new recipe"
+            },
+            "400": {
+              "description": "Error message"
+            }
+          }
+        }
+      },
+      "/recipes/{id}/ingredients": {
+        "post": {
+          "summary": "add ingredient to recipe",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "The recipe ID"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ingredientName": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "The ID of the new ingredient"
+            },
+            "400": {
+              "description": "Error message"
+            }
+          }
+        }
+      },
+      "/recipes/{id}/rate": {
+        "put": {
+          "summary": "rate recipe",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "The recipe ID"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userId": {
+                      "type": "integer"
+                    },
+                    "rating": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "The rating"
+            },
+            "400": {
+              "description": "Error message"
+            }
+          }
+        }
+      },
+      "/ingredients/{id}": {
+        "get": {
+          "summary": "get recipes and attributes associated with given ingredient",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "The ingredient ID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The ingredient"
+            },
+            "400": {
+              "description": "Error message"
+            }
+          }
+        }
+      },
+      "/ingredients/{id}/attributes": {
+        "post": {
+          "summary": "add attribute to ingredient",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "The ingredient ID"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "attributeName": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "The ID of the new attribute"
+            },
+            "400": {
+              "description": "Error message"
+            }
+          }
+        }
+      },
+      "/attributes/{name}": {
+        "get": {
+          "summary": "get all recipes with given attribute",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "name",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "The attribute name"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The recipes with the given attribute"
+            },
+            "400": {
+              "description": "Error message"
+            }
+          }
+        }
+      }
+    }
+  }

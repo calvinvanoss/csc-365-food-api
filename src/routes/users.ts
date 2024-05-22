@@ -17,7 +17,7 @@ usersRouter.get("/:id", async (req: Request, res: Response) => {
         recipes: true,
       },
     });
-    res.json(user.recipes.map((recipe) => recipe.name));
+    res.json(user.recipes);
   } catch (error) {
     res.json(error);
   }
