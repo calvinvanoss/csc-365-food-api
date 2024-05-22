@@ -5,7 +5,7 @@ const recipesRouter = express.Router();
 const prisma = new PrismaClient();
 
 recipesRouter.get("/:id", async (req: Request, res: Response) => {
-  // get ingredients, attributes, and average rating of recipe
+  // #swagger.summary = 'get ingredients, attributes, and average rating of recipe'
   const { id } = req.params;
 
   try {
@@ -16,15 +16,12 @@ recipesRouter.get("/:id", async (req: Request, res: Response) => {
       include: {
         recipeIngredients: {
           include: {
-            ingredient: {
-              include: {
-                ingredientAttributes: {
-                  include: {
-                    attribute: true,
-                  },
-                },
-              },
-            },
+            ingredient: true,
+          },
+        },
+        recipeAttributes: {
+          include: {
+            attribute: true,
           },
         },
         user: true,
@@ -50,15 +47,9 @@ recipesRouter.get("/:id", async (req: Request, res: Response) => {
       ingredients: recipe.recipeIngredients.map(
         (recipeIngredient) => recipeIngredient.ingredient.name,
       ),
-      attributes: [
-        ...new Set(
-          recipe.recipeIngredients.flatMap((recipeIngredient) =>
-            recipeIngredient.ingredient.ingredientAttributes.map(
-              (ingredientAttribute) => ingredientAttribute.attribute.name,
-            ),
-          ),
-        ),
-      ],
+      attributes: recipe.recipeAttributes.map(
+        (recipeAttribute) => recipeAttribute.attribute.name,
+      ),
       rating: rating._avg.rating,
     });
   } catch (error) {
@@ -66,19 +57,24 @@ recipesRouter.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
-recipesRouter.post("/:id", async (req: Request, res: Response) => {
-  // create recipe
-  const { id } = req.params;
-  const { name, instructions } = req.body;
+recipesRouter.post("/", async (req: Request, res: Response) => {
+  // #swagger.summary = 'create recipe'
+  const { name, instructions, token } = req.body;
 
   try {
+    const user = await prisma.user.findFirstOrThrow({
+      where: {
+        token,
+      },
+    });
+
     const recipe = await prisma.recipe.create({
       data: {
         name,
         instructions,
         user: {
           connect: {
-            id: parseInt(id),
+            id: user.id,
           },
         },
       },
@@ -90,17 +86,24 @@ recipesRouter.post("/:id", async (req: Request, res: Response) => {
 });
 
 recipesRouter.post("/:id/ingredients", async (req: Request, res: Response) => {
-  // add ingredient to recipe
+  // #swagger.summary = 'add ingredient to recipe'
   const { id } = req.params;
-  const { ingredientName } = req.body;
+  const { name, token } = req.body;
 
   try {
-    const ingredient = await prisma.ingredient.upsert({
-      where: { name: ingredientName },
-      update: {},
-      create: { name: ingredientName },
+    await prisma.recipe.findFirstOrThrow({
+      where: {
+        id: parseInt(id),
+        user: {
+          token,
+        },
+      },
     });
-
+    await prisma.ingredient.upsert({
+      where: { name },
+      update: {},
+      create: { name },
+    });
     await prisma.recipeIngredient.create({
       data: {
         recipe: {
@@ -110,29 +113,75 @@ recipesRouter.post("/:id/ingredients", async (req: Request, res: Response) => {
         },
         ingredient: {
           connect: {
-            name: ingredientName,
+            name,
           },
         },
       },
     });
 
-    res.json(ingredient.id);
+    res.json("success");
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+recipesRouter.post("/:id/attributes", async (req: Request, res: Response) => {
+  // #swagger.summary = 'add attribute to recipe'
+  const { id } = req.params;
+  const { name, token } = req.body;
+
+  try {
+    await prisma.recipe.findFirstOrThrow({
+      where: {
+        id: parseInt(id),
+        user: {
+          token,
+        },
+      },
+    });
+    await prisma.attribute.upsert({
+      where: { name },
+      update: {},
+      create: { name },
+    });
+    await prisma.recipeAttribute.create({
+      data: {
+        recipe: {
+          connect: {
+            id: parseInt(id),
+          },
+        },
+        attribute: {
+          connect: {
+            name,
+          },
+        },
+      },
+    });
+
+    res.json("success");
   } catch (error) {
     res.json(error);
   }
 });
 
 recipesRouter.put("/:id/rate", async (req: Request, res: Response) => {
-  // rate recipe
+  // #swagger.summary = 'rate recipe'
   const { id } = req.params;
-  const { userId, rating } = req.body;
+  const { rating, description, token } = req.body;
 
   try {
-    const result = await prisma.rating.upsert({
+    const user = await prisma.user.findFirstOrThrow({
+      where: {
+        token,
+      },
+    });
+
+    await prisma.rating.upsert({
       where: {
         recipeId_userId: {
           recipeId: parseInt(id),
-          userId: parseInt(userId),
+          userId: user.id,
         },
       },
       create: {
@@ -143,17 +192,19 @@ recipesRouter.put("/:id/rate", async (req: Request, res: Response) => {
         },
         user: {
           connect: {
-            id: parseInt(userId),
+            id: user.id,
           },
         },
         rating: parseInt(rating),
+        description,
       },
       update: {
         rating: parseInt(rating),
+        description,
       },
     });
 
-    res.json(result);
+    res.json("success");
   } catch (error) {
     console.log(error);
     res.json(error);

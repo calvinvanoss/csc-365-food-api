@@ -19,6 +19,7 @@ app.use("/attributes", attributesRouter);
 app.use("/docs", serve, setup(swaggerDocument));
 
 app.get("/", (req, res) => {
+  // #swagger.summary = 'Hello, World!'
   res.send("Hello, World!");
 });
 

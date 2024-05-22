@@ -10,7 +10,7 @@ const generateToken = (name: string) => {
 };
 
 usersRouter.get("/:id", async (req: Request, res: Response) => {
-  // get recipes associated with given user
+  // #swagger.summary = 'get recipes associated with given user'
   const { id } = req.params;
 
   try {
@@ -29,7 +29,7 @@ usersRouter.get("/:id", async (req: Request, res: Response) => {
 });
 
 usersRouter.post("/signup", async (req: Request, res: Response) => {
-  // signup user
+  // #swagger.summary = 'create user'
   const { name, password } = req.body;
 
   try {
@@ -47,7 +47,7 @@ usersRouter.post("/signup", async (req: Request, res: Response) => {
 });
 
 usersRouter.post("/login", async (req: Request, res: Response) => {
-  // login user
+  // #swagger.summary = 'login user to get auth token'
   const { name, password } = req.body;
 
   try {

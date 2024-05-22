@@ -5,34 +5,23 @@ const attributesRouter = express.Router();
 const prisma = new PrismaClient();
 
 attributesRouter.get("/:name", async (req: Request, res: Response) => {
-  // get all recipes with given attribute
+  // #swagger.summary = 'get recipes associated with given attribute'
   const { name } = req.params;
 
   try {
     const recipes = await prisma.recipe.findMany({
       where: {
-        recipeIngredients: {
+        recipeAttributes: {
           some: {
-            ingredient: {
-              ingredientAttributes: {
-                some: {
-                  attribute: {
-                    name,
-                  },
-                },
-              },
+            attribute: {
+              name,
             },
           },
         },
       },
     });
 
-    res.json(
-      recipes.map((recipe) => ({
-        name: recipe.name,
-        id: recipe.id,
-      })),
-    );
+    res.json(recipes);
   } catch (error) {
     res.json(error);
   }
