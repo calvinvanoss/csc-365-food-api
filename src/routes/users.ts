@@ -1,8 +1,13 @@
 import { PrismaClient } from "@prisma/client";
+import { sign } from "jsonwebtoken";
 import express, { Request, Response } from "express";
 
 const usersRouter = express.Router();
 const prisma = new PrismaClient();
+
+const generateToken = (name: string) => {
+  return sign({ name }, process.env.JWT_SECRET!);
+};
 
 usersRouter.get("/:id", async (req: Request, res: Response) => {
   // get recipes associated with given user
@@ -32,9 +37,10 @@ usersRouter.post("/signup", async (req: Request, res: Response) => {
       data: {
         name,
         password,
+        token: generateToken(name),
       },
     });
-    res.json(user.id);
+    res.json(user.token);
   } catch (error) {
     res.json(error);
   }
@@ -55,7 +61,7 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
       res.json("Invalid login");
       return;
     }
-    res.json(user.id);
+    res.json(user.token);
   } catch (error) {
     res.json(error);
   }
