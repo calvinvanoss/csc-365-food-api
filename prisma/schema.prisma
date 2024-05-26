@@ -34,16 +34,16 @@ model Recipe {
   ratings           Rating[]
 }
 
-model Attribute {
-  id       Int               @id @default(autoincrement())
-  name     String            @unique
-  receipes RecipeAttribute[]
-}
-
 model Ingredient {
   id                Int                @id @default(autoincrement())
   name              String             @unique
   recipeIngredients RecipeIngredient[]
+}
+
+model Attribute {
+  id       Int               @id @default(autoincrement())
+  name     String            @unique
+  receipes RecipeAttribute[]
 }
 
 model RecipeIngredient {

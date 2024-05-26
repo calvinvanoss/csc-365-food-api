@@ -23,7 +23,7 @@ attributesRouter.get("/:name", async (req: Request, res: Response) => {
 
     res.json(recipes);
   } catch (error) {
-    res.json(error);
+    res.status(500).json(error);
   }
 });
 

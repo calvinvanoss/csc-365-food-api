@@ -9,27 +9,21 @@ ingredientsRouter.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const ingredient = await prisma.ingredient.findUniqueOrThrow({
+    const recipes = await prisma.recipe.findMany({
       where: {
-        id: parseInt(id),
-      },
-      include: {
         recipeIngredients: {
-          include: {
-            recipe: true,
+          some: {
+            ingredient: {
+              id: parseInt(id),
+            },
           },
         },
       },
     });
 
-    res.json({
-      name: ingredient.name,
-      recipes: ingredient.recipeIngredients.map(
-        (recipeIngredient) => recipeIngredient.recipe,
-      ),
-    });
+    res.json(recipes);
   } catch (error) {
-    res.json(error);
+    res.status(500).json(error);
   }
 });
 

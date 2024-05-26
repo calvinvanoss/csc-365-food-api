@@ -1,13 +1,50 @@
 import { PrismaClient } from "@prisma/client";
-import { sign } from "jsonwebtoken";
 import express, { Request, Response } from "express";
+import { hash, generateToken } from "../utils/users";
 
 const usersRouter = express.Router();
 const prisma = new PrismaClient();
 
-const generateToken = (name: string) => {
-  return sign({ name }, process.env.JWT_SECRET!);
-};
+usersRouter.post("/signup", async (req: Request, res: Response) => {
+  // #swagger.summary = 'create user'
+  const { name, password } = req.body;
+
+  if (password.length < 8) {
+    res.status(400).json("password must be at least 8 characters");
+    return;
+  }
+
+  try {
+    const user = await prisma.user.create({
+      data: {
+        name,
+        password: hash(password),
+        token: generateToken(name),
+      },
+    });
+    res.json({ token: user.token });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+usersRouter.post("/login", async (req: Request, res: Response) => {
+  // #swagger.summary = 'login user to get auth token'
+  const { name, password } = req.body;
+
+  try {
+    const user = await prisma.user.findFirstOrThrow({
+      where: {
+        name,
+        password: hash(password),
+      },
+    });
+
+    res.json({ token: user.token });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
 
 usersRouter.get("/:id", async (req: Request, res: Response) => {
   // #swagger.summary = 'get recipes associated with given user'
@@ -24,47 +61,17 @@ usersRouter.get("/:id", async (req: Request, res: Response) => {
     });
     res.json(user.recipes);
   } catch (error) {
-    res.json(error);
+    res.status(500).json(error);
   }
 });
 
-usersRouter.post("/signup", async (req: Request, res: Response) => {
-  // #swagger.summary = 'create user'
-  const { name, password } = req.body;
+usersRouter.get(
+  "/users/:id/recommendations",
+  async (req: Request, res: Response) => {
+    // #swagger.summary = 'TODO'
 
-  try {
-    const user = await prisma.user.create({
-      data: {
-        name,
-        password,
-        token: generateToken(name),
-      },
-    });
-    res.json(user.token);
-  } catch (error) {
-    res.json(error);
-  }
-});
-
-usersRouter.post("/login", async (req: Request, res: Response) => {
-  // #swagger.summary = 'login user to get auth token'
-  const { name, password } = req.body;
-
-  try {
-    const user = await prisma.user.findFirst({
-      where: {
-        name,
-        password,
-      },
-    });
-    if (!user) {
-      res.json("Invalid login");
-      return;
-    }
-    res.json(user.token);
-  } catch (error) {
-    res.json(error);
-  }
-});
+    res.json("TODO");
+  },
+);
 
 export default usersRouter;
