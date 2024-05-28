@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Recipe } from "@prisma/client";
 import express, { Request, Response } from "express";
 import { hash, generateToken } from "../utils/users";
 
@@ -65,13 +65,63 @@ usersRouter.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
-usersRouter.get(
-  "/users/:id/recommendations",
-  async (req: Request, res: Response) => {
-    // #swagger.summary = 'TODO'
+usersRouter.get("/:id/recommendations", async (req: Request, res: Response) => {
+  // #swagger.summary = 'use collaborative filtering to recommend recipes to user'
+  const { id } = req.params;
+  const userId = parseInt(id);
 
-    res.json("TODO");
-  },
-);
+  try {
+    const recommendations = await prisma.$queryRaw<Recipe[]>`
+      SELECT * FROM recipes where id in ( -- get 10 highest rated recipes by similar users
+          SELECT ratings.recipe_id from ratings
+          WHERE ratings.user_id in ( -- get 5 most similar users
+              SELECT similar_user_ratings.user_id
+              FROM ratings target_user_ratings
+              JOIN ratings similar_user_ratings ON target_user_ratings.recipe_id = similar_user_ratings.recipe_id
+              WHERE target_user_ratings.user_id = ${userId}
+              AND similar_user_ratings.user_id <> ${userId}
+              AND ABS(target_user_ratings.rating - similar_user_ratings.rating) <= 1
+              GROUP BY similar_user_ratings.user_id
+              ORDER BY COUNT(*) DESC
+              LIMIT 5
+          )
+          GROUP BY recipe_id
+          ORDER BY max(rating) desc
+          LIMIT 10
+      )
+      AND recipes.user_id <> ${userId}
+      ORDER BY (( -- count of common ingredients
+          SELECT COUNT(*) FROM recipe_ingredients
+          WHERE recipe_ingredients.recipe_id = recipes.id
+          AND recipe_ingredients.ingredient_id in (
+              SELECT recipe_ingredients.ingredient_id
+                  FROM ratings
+                  JOIN recipes ON ratings.recipe_id = recipes.id
+                  JOIN recipe_ingredients ON recipes.id = recipe_ingredients.recipe_id
+                  WHERE ratings.user_id = ${userId}
+                  GROUP BY recipe_ingredients.ingredient_id
+                  ORDER BY COUNT(*) DESC
+                  LIMIT 5
+          )) + ( -- count of common attributes
+          SELECT COUNT(*) FROM recipe_attributes
+          WHERE recipe_attributes.recipe_id = recipes.id
+          AND recipe_attributes.attribute_id in (
+              SELECT recipe_attributes.attribute_id
+                  FROM ratings
+                  JOIN recipes ON ratings.recipe_id = recipes.id
+                  JOIN recipe_attributes ON recipes.id = recipe_attributes.recipe_id
+                  WHERE ratings.user_id = ${userId}
+                  GROUP BY recipe_attributes.attribute_id
+                  ORDER BY COUNT(*) DESC
+                  LIMIT 3
+          ))) DESC
+      LIMIT 5
+      `;
+
+    res.json(recommendations);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
 
 export default usersRouter;

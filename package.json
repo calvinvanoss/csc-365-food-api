@@ -8,6 +8,7 @@
     "setup": "cp envs/local.env .env && npm i && npx prisma generate",
     "start-local-env": "npm run setup && npx supabase start && npx prisma db push",
     "lint": "eslint . --fix",
+    "populate": "ts-node scripts/autopopulate.ts",
     "build": "npm ci && npx prisma db push && node swagger.js && tsc",
     "start": "node dist/src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.8",

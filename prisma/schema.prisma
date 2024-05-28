@@ -21,56 +21,67 @@ model User {
   token    String
   recipes  Recipe[]
   ratings  Rating[]
+
+  @@map("users")
 }
 
 model Recipe {
   id                Int                @id @default(autoincrement())
   name              String
   instructions      String
-  userId            Int
+  userId            Int                @map("user_id")
   user              User               @relation(fields: [userId], references: [id])
   recipeIngredients RecipeIngredient[]
   recipeAttributes  RecipeAttribute[]
   ratings           Rating[]
+
+  @@map("recipes")
 }
 
 model Ingredient {
   id                Int                @id @default(autoincrement())
   name              String             @unique
   recipeIngredients RecipeIngredient[]
+
+  @@map("ingredients")
 }
 
 model Attribute {
   id       Int               @id @default(autoincrement())
   name     String            @unique
   receipes RecipeAttribute[]
+
+  @@map("attributes")
 }
 
 model RecipeIngredient {
-  recipeId     Int
-  ingredientId Int
+  recipeId     Int        @map("recipe_id")
+  ingredientId Int        @map("ingredient_id")
   recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   ingredient   Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
 
   @@id([recipeId, ingredientId])
+  @@map("recipe_ingredients")
 }
 
 model RecipeAttribute {
-  recipeId    Int
-  attributeId Int
+  recipeId    Int       @map("recipe_id")
+  attributeId Int       @map("attribute_id")
   recipe      Recipe    @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
 
   @@id([recipeId, attributeId])
+  @@map("recipe_attributes")
 }
 
 model Rating {
   rating      Int
-  recipeId    Int
-  userId      Int
+  recipeId    Int     @map("recipe_id")
+  userId      Int     @map("user_id")
   description String?
   recipe      Recipe  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([recipeId, userId])
+  @@map("ratings")
 }
