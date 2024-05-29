@@ -4,9 +4,9 @@ import express, { Request, Response } from "express";
 const attributesRouter = express.Router();
 const prisma = new PrismaClient();
 
-attributesRouter.get("/:name", async (req: Request, res: Response) => {
+attributesRouter.get("/:id", async (req: Request, res: Response) => {
   // #swagger.summary = 'get recipes associated with given attribute'
-  const { name } = req.params;
+  const { id } = req.params;
 
   try {
     const recipes = await prisma.recipe.findMany({
@@ -14,7 +14,7 @@ attributesRouter.get("/:name", async (req: Request, res: Response) => {
         recipeAttributes: {
           some: {
             attribute: {
-              name,
+              id: parseInt(id),
             },
           },
         },

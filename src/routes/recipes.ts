@@ -13,6 +13,10 @@ recipesRouter.post("/", async (req: Request, res: Response) => {
     res.status(400).json({ error: "name required" });
     return;
   }
+  if (!token) {
+    res.status(400).json({ error: "token required" });
+    return;
+  }
 
   try {
     const user = await prisma.user.findFirstOrThrow({
@@ -96,6 +100,15 @@ recipesRouter.post("/:id/ingredients", async (req: Request, res: Response) => {
   const { id } = req.params;
   const { name, token } = req.body;
 
+  if (!name) {
+    res.status(400).json({ error: "name required" });
+    return;
+  }
+  if (!token) {
+    res.status(400).json({ error: "token required" });
+    return;
+  }
+
   try {
     const user = await prisma.user.findFirstOrThrow({
       where: {
@@ -132,6 +145,15 @@ recipesRouter.delete(
     const { id } = req.params;
     const { name, token } = req.body;
 
+    if (!name) {
+      res.status(400).json({ error: "name required" });
+      return;
+    }
+    if (!token) {
+      res.status(400).json({ error: "token required" });
+      return;
+    }
+
     try {
       const user = await prisma.user.findFirstOrThrow({
         where: {
@@ -166,6 +188,15 @@ recipesRouter.post("/:id/attributes", async (req: Request, res: Response) => {
   // #swagger.summary = 'add attribute to recipe'
   const { id } = req.params;
   const { name, token } = req.body;
+
+  if (!name) {
+    res.status(400).json({ error: "name required" });
+    return;
+  }
+  if (!token) {
+    res.status(400).json({ error: "token required" });
+    return;
+  }
 
   try {
     const recipe = await prisma.recipe.findFirstOrThrow({
@@ -207,6 +238,15 @@ recipesRouter.delete("/:id/attributes", async (req: Request, res: Response) => {
   const { id } = req.params;
   const { name, token } = req.body;
 
+  if (!name) {
+    res.status(400).json({ error: "name required" });
+    return;
+  }
+  if (!token) {
+    res.status(400).json({ error: "token required" });
+    return;
+  }
+
   try {
     const recipe = await prisma.recipe.findFirstOrThrow({
       where: {
@@ -238,6 +278,11 @@ recipesRouter.put("/:id/rate", async (req: Request, res: Response) => {
   // #swagger.summary = 'rate recipe'
   const { id } = req.params;
   const { rating, description, token } = req.body;
+
+  if (!token) {
+    res.status(400).json({ error: "token required" });
+    return;
+  }
 
   // check if rating is between 1 and 5
   if (!(parseInt(rating) >= 1 && parseInt(rating) <= 5)) {

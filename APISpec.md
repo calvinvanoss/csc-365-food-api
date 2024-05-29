@@ -16,7 +16,7 @@ Create new user. <br />
 
 ```json
 {
-  "token": "token"
+  "token": "string"
 }
 ```
 ### `/users/login` (POST)
@@ -34,11 +34,11 @@ Login existing user. <br />
 
 ```json
 {
-  "token": "token"
+  "token": "string"
 }
 ```
 
-### `/users/{user_id}` (GET)
+### `/users/{id}` (GET)
 Get recipes associated with given user. <br />
 
 **Response**:
@@ -53,25 +53,8 @@ Get recipes associated with given user. <br />
   }
 ]
 ```
-### `/users/{user_id}/recommendations` (GET)
+### `/users/{id}/recommendations` (GET)
 Use collaborative filtering to recommend recipes to user. <br />
-
-**Response**:
-
-```json
-[
-  {
-    "id" : "integer",
-    "name": "string",
-    "instructions": "string",
-    "id": "integer"
-  }
-]
-```
-
-## Ingredients
-### `/ingredients/{ingredient_id}` (GET)
-Get recipes associated with the given ingredient.  <br />
 
 **Response**:
 
@@ -96,6 +79,7 @@ Add a new recipe. <br />
 {
   "name": "string",
   "instructions": "string",
+  "token": "string"
 }
 ```
 **Response**:
@@ -108,7 +92,7 @@ Add a new recipe. <br />
   "id": "integer"
 }
 ```
-### `/recipes/{recipe_id}` (GET)
+### `/recipes/{id}` (GET)
 Retrieve ingredients, attributes, and average rating of recipe. <br />
 
 **Response**:
@@ -136,14 +120,15 @@ Retrieve ingredients, attributes, and average rating of recipe. <br />
   "rating": "integer"
 }
 ```
-### `/recipes/{recipe_id}/ingredients` (POST)
+### `/recipes/{id}/ingredients` (POST)
 Adds an ingredient to a recipe. Forks the recipe if not the owner. <br />
 
 **Request**:
 
 ```json
 {
-  "name": "string"
+  "name": "string",
+  "token": "string"
 }
 ```
 **Response**:
@@ -156,14 +141,15 @@ Adds an ingredient to a recipe. Forks the recipe if not the owner. <br />
   "id": "integer"
 }
 ```
-### `/recipes/{recipe_id}/ingredients` (DELETE)
+### `/recipes/{id}/ingredients` (DELETE)
 Deletes an ingredient from a recipe. Forks the recipe if not the owner. <br />
 
 **Request**:
 
 ```json
 {
-  "name": "string"
+  "name": "string",
+  "token": "string"
 }
 ```
 **Response**:
@@ -176,14 +162,15 @@ Deletes an ingredient from a recipe. Forks the recipe if not the owner. <br />
   "id": "integer"
 }
 ```
-### `/recipes/{recipe_id}/attributes` (POST)
+### `/recipes/{id}/attributes` (POST)
 Adds an attribute to a recipe. <br />
 
 **Request**:
 
 ```json
 {
-  "name": "string"
+  "name": "string",
+  "token": "string"
 }
 ```
 **Response**:
@@ -196,14 +183,15 @@ Adds an attribute to a recipe. <br />
   "id": "integer"
 }
 ```
-### `/recipes/{recipe_id}/attributes` (DELETE)
+### `/recipes/{id}/attributes` (DELETE)
 Deletes an attribute from a recipe. <br />
 
 **Request**:
 
 ```json
 {
-  "name": "string"
+  "name": "string",
+  "token": "string"
 }
 ```
 **Response**:
@@ -216,7 +204,7 @@ Deletes an attribute from a recipe. <br />
   "id": "integer"
 }
 ```
-### `/recipes/{recipe_id}/rate` (POST)
+### `/recipes/{id}/rate` (POST)
 Adds a rating to a recipe. <br />
 
 **Request**:
@@ -224,7 +212,8 @@ Adds a rating to a recipe. <br />
 ```json
 {
   "rating": "integer", /* Between 1 and 5 */
-  "description": "string"
+  "description": "string",
+  "token": "string"
 }
 ```
 **Response**:
@@ -234,8 +223,26 @@ Adds a rating to a recipe. <br />
   "success": true
 }
 ```
+
+## Ingredients
+### `/ingredients/{id}` (GET)
+Get recipes associated with the given ingredient.  <br />
+
+**Response**:
+
+```json
+[
+  {
+    "id" : "integer",
+    "name": "string",
+    "instructions": "string",
+    "id": "integer"
+  }
+]
+```
+
 ## Attributes
-### `/attributes/{name}` (GET)
+### `/attributes/{id}` (GET)
 Gets recipes associated with the given attribute. <br />
 
 **Response**:
