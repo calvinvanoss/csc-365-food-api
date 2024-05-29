@@ -8,7 +8,7 @@ Create new user. <br />
 
 ```json
 {
-  "user_name": "string",
+  "name": "string",
   "password": "string" /* Must be at least 8 characters */
 }
 ```
@@ -16,7 +16,7 @@ Create new user. <br />
 
 ```json
 {
-  "user_token": "token"
+  "token": "token"
 }
 ```
 ### `/users/login` (POST)
@@ -26,7 +26,7 @@ Login existing user. <br />
 
 ```json
 {
-  "user_name": "string",
+  "name": "string",
   "password": "string"
 }
 ```
@@ -34,7 +34,7 @@ Login existing user. <br />
 
 ```json
 {
-  "user_token": "token"
+  "token": "token"
 }
 ```
 
@@ -46,10 +46,10 @@ Get recipes associated with given user. <br />
 ```json
 [
   {
-    "recipe_id" : "integer",
+    "id" : "integer",
     "name": "string",
     "instructions": "string",
-    "user_id": "integer"
+    "id": "integer"
   }
 ]
 ```
@@ -61,27 +61,27 @@ Use collaborative filtering to recommend recipes to user. <br />
 ```json
 [
   {
-    "recipe_id" : "integer",
+    "id" : "integer",
     "name": "string",
     "instructions": "string",
-    "user_id": "integer"
+    "id": "integer"
   }
 ]
 ```
 
 ## Ingredients
 ### `/ingredients/{ingredient_id}` (GET)
-Retrieve information about a given ingredient.  <br />
+Get recipes associated with the given ingredient.  <br />
 
 **Response**:
 
 ```json
 [
   {
-    "recipe_id" : "integer",
+    "id" : "integer",
     "name": "string",
     "instructions": "string",
-    "user_id": "integer"
+    "id": "integer"
   }
 ]
 ```
@@ -94,18 +94,18 @@ Add a new recipe. <br />
 
 ```json
 {
-  "recipe_name": "string",
-  "recipe_instructions": "string",
+  "name": "string",
+  "instructions": "string",
 }
 ```
 **Response**:
 
 ```json
 {
-  "recipe_id" : "integer",
+  "id" : "integer",
   "name": "string",
   "instructions": "string",
-  "user_id": "integer"
+  "id": "integer"
 }
 ```
 ### `/recipes/{recipe_id}` (GET)
@@ -115,22 +115,22 @@ Retrieve ingredients, attributes, and average rating of recipe. <br />
 
 ```json
 {
-  "recipe_name": "string",
+  "name": "string",
   "author":{
-    "user_name": "string",
-    "user_id": "integer"
+    "name": "string",
+    "id": "integer"
   },
   "instructions": "string",
   "ingredients": [
     {
-      "ingredient_id": "integer",
-      "ingredient_name": "string"
+      "id": "integer",
+      "name": "string"
     }
   ],
   "attributes": [
     {
-      "attribute_id": "integer",
-      "attribute_name": "string"
+      "id": "integer",
+      "name": "string"
     }
   ],
   "rating": "integer"
@@ -143,17 +143,17 @@ Adds an ingredient to a recipe. Forks the recipe if not the owner. <br />
 
 ```json
 {
-  "ingredient_name": "string"
+  "name": "string"
 }
 ```
 **Response**:
 
 ```json
 {
-  "recipe_id" : "integer",
+  "id" : "integer",
   "name": "string",
   "instructions": "string",
-  "user_id": "integer"
+  "id": "integer"
 }
 ```
 ### `/recipes/{recipe_id}/ingredients` (DELETE)
@@ -163,17 +163,17 @@ Deletes an ingredient from a recipe. Forks the recipe if not the owner. <br />
 
 ```json
 {
-  "ingredient_name": "string"
+  "name": "string"
 }
 ```
 **Response**:
 
 ```json
 {
-  "recipe_id" : "integer",
+  "id" : "integer",
   "name": "string",
   "instructions": "string",
-  "user_id": "integer"
+  "id": "integer"
 }
 ```
 ### `/recipes/{recipe_id}/attributes` (POST)
@@ -183,17 +183,17 @@ Adds an attribute to a recipe. <br />
 
 ```json
 {
-  "attribute_name": "string"
+  "name": "string"
 }
 ```
 **Response**:
 
 ```json
 {
-  "recipe_id" : "integer",
+  "id" : "integer",
   "name": "string",
   "instructions": "string",
-  "user_id": "integer"
+  "id": "integer"
 }
 ```
 ### `/recipes/{recipe_id}/attributes` (DELETE)
@@ -203,17 +203,17 @@ Deletes an attribute from a recipe. <br />
 
 ```json
 {
-  "attribute_name": "string"
+  "name": "string"
 }
 ```
 **Response**:
 
 ```json
 {
-  "recipe_id" : "integer",
+  "id" : "integer",
   "name": "string",
   "instructions": "string",
-  "user_id": "integer"
+  "id": "integer"
 }
 ```
 ### `/recipes/{recipe_id}/rate` (POST)
@@ -243,10 +243,10 @@ Gets recipes associated with the given attribute. <br />
 ```json
 [
   {
-    "recipe_id" : "integer",
+    "id" : "integer",
     "name": "string",
     "instructions": "string",
-    "user_id": "integer"
+    "id": "integer"
   }
 ]
 ```
