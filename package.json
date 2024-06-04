@@ -8,7 +8,7 @@
     "setup": "cp envs/local.env .env && npm i && npx prisma generate",
     "start-local-env": "npm run setup && npx supabase start && npx prisma db push",
     "lint": "eslint . --fix",
-    "populate": "ts-node scripts/autopopulate.ts",
+    "populate": "tsc && node dist/scripts/autopopulate.js",
     "build": "npm ci && npx prisma db push && node swagger.js && tsc",
     "start": "node dist/src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -28,12 +28,12 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "prettier": "^3.2.5",
-    "prisma": "^5.14.0",
+    "prisma": "^5.15.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@prisma/client": "^5.14.0",
+    "@prisma/client": "^5.15.0",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "supabase": "^1.165.0",
