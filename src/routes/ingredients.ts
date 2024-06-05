@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import express, { Request, Response } from "express";
 
 const ingredientsRouter = express.Router();
@@ -23,7 +23,17 @@ ingredientsRouter.get("/:id", async (req: Request, res: Response) => {
 
     res.json(recipes);
   } catch (error) {
-    res.status(500).json(error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      // Handle Prisma known request errors
+      if (error.code === "P2025") {
+        res.status(404).json({ error: "Ingredient not found" });
+      } else {
+        res.status(500).json({ error: "Internal server error" });
+      }
+    } else {
+      // Handle other errors
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
 });
 
