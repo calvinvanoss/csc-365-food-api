@@ -212,7 +212,7 @@ recipesRouter.delete(
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         switch (error.code) {
           case 'P2025':
-            res.status(404).json({ error: 'Recipe not found.' });
+            res.status(404).json({ error: 'Ingredient not found.' });
             break;
           default:
             res.status(500).json({ error: 'Something went wrong.' });
@@ -323,7 +323,7 @@ recipesRouter.delete("/:id/attributes", async (req: Request, res: Response) => {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       switch (error.code) {
         case 'P2025':
-          res.status(404).json({ error: 'Recipe not found.' });
+          res.status(404).json({ error: 'Attribute not found.' });
           break;
         default:
           res.status(500).json({ error: 'Something went wrong.' });
