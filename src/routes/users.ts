@@ -59,7 +59,7 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
 });
 
 usersRouter.get("/:id", async (req: Request, res: Response) => {
-  // #swagger.summary = 'get recipes associated with given user'
+  // #swagger.summary = 'get recipes and ratings associated with given user'
   const { id } = req.params;
 
   try {
@@ -69,9 +69,13 @@ usersRouter.get("/:id", async (req: Request, res: Response) => {
       },
       include: {
         recipes: true,
+        ratings: true,
       },
     });
-    res.json(user.recipes);
+    res.json({
+      recipes: user.recipes,
+      ratings: user.ratings,
+    });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       res.status(404).json("User not found");
