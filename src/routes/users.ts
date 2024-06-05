@@ -1,4 +1,4 @@
-import { PrismaClient, Recipe } from "@prisma/client";
+import { PrismaClient, Recipe, Prisma } from "@prisma/client";
 import express, { Request, Response } from "express";
 import { hash, generateToken } from "../utils/users";
 
@@ -24,7 +24,15 @@ usersRouter.post("/signup", async (req: Request, res: Response) => {
     });
     res.json({ token: user.token });
   } catch (error) {
-    res.status(500).json(error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        res.status(400).json("User with the same name already exists");
+      } else {
+        res.status(500).json("An error occurred while creating the user");
+      }
+    } else {
+      res.status(500).json("An error occurred while creating the user");
+    }
   }
 });
 
@@ -42,7 +50,11 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
 
     res.json({ token: user.token });
   } catch (error) {
-    res.status(500).json(error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      res.status(400).json("Invalid username or password");
+    } else {
+      res.status(500).json("An error occurred while logging in");
+    }
   }
 });
 
@@ -61,7 +73,11 @@ usersRouter.get("/:id", async (req: Request, res: Response) => {
     });
     res.json(user.recipes);
   } catch (error) {
-    res.status(500).json(error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      res.status(404).json("User not found");
+    } else {
+      res.status(500).json("An error occurred while retrieving user recipes");
+    }
   }
 });
 
@@ -120,7 +136,7 @@ usersRouter.get("/:id/recommendations", async (req: Request, res: Response) => {
 
     res.json(recommendations);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json("An error occurred while retrieving recommendations");
   }
 });
 
