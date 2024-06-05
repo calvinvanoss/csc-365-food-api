@@ -25,7 +25,7 @@ usersRouter.post("/signup", async (req: Request, res: Response) => {
     res.json({ token: user.token });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if (error.code === 'P2002') {
+      if (error.code === "P2002") {
         res.status(400).json("User with the same name already exists");
       } else {
         res.status(500).json("An error occurred while creating the user");

@@ -40,14 +40,16 @@ recipesRouter.post("/", async (req: Request, res: Response) => {
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       switch (error.code) {
-        case 'P2002':
-          res.status(400).json({ error: 'A recipe with this name already exists.' });
+        case "P2002":
+          res
+            .status(400)
+            .json({ error: "A recipe with this name already exists." });
           break;
         default:
-          res.status(500).json({ error: 'Something went wrong.' });
+          res.status(500).json({ error: "Something went wrong." });
       }
     } else {
-      res.status(500).json({ error: 'Something went wrong.' });
+      res.status(500).json({ error: "Something went wrong." });
     }
   }
 });
@@ -103,14 +105,14 @@ recipesRouter.get("/:id", async (req: Request, res: Response) => {
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       switch (error.code) {
-        case 'P2025':
-          res.status(404).json({ error: 'Recipe not found.' });
+        case "P2025":
+          res.status(404).json({ error: "Recipe not found." });
           break;
         default:
-          res.status(500).json({ error: 'Something went wrong.' });
+          res.status(500).json({ error: "Something went wrong." });
       }
     } else {
-      res.status(500).json({ error: 'Something went wrong.' });
+      res.status(500).json({ error: "Something went wrong." });
     }
   }
 });
@@ -156,14 +158,14 @@ recipesRouter.post("/:id/ingredients", async (req: Request, res: Response) => {
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       switch (error.code) {
-        case 'P2025':
-          res.status(404).json({ error: 'Recipe not found.' });
+        case "P2025":
+          res.status(404).json({ error: "Recipe not found." });
           break;
         default:
-          res.status(500).json({ error: 'Something went wrong.' });
+          res.status(500).json({ error: "Something went wrong." });
       }
     } else {
-      res.status(500).json({ error: 'Something went wrong.' });
+      res.status(500).json({ error: "Something went wrong." });
     }
   }
 });
@@ -211,14 +213,14 @@ recipesRouter.delete(
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         switch (error.code) {
-          case 'P2025':
-            res.status(404).json({ error: 'Ingredient not found.' });
+          case "P2025":
+            res.status(404).json({ error: "Ingredient not found." });
             break;
           default:
-            res.status(500).json({ error: 'Something went wrong.' });
+            res.status(500).json({ error: "Something went wrong." });
         }
       } else {
-        res.status(500).json({ error: 'Something went wrong.' });
+        res.status(500).json({ error: "Something went wrong." });
       }
     }
   },
@@ -271,14 +273,14 @@ recipesRouter.post("/:id/attributes", async (req: Request, res: Response) => {
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       switch (error.code) {
-        case 'P2025':
-          res.status(404).json({ error: 'Recipe not found.' });
+        case "P2025":
+          res.status(404).json({ error: "Recipe not found." });
           break;
         default:
-          res.status(500).json({ error: 'Something went wrong.' });
+          res.status(500).json({ error: "Something went wrong." });
       }
     } else {
-      res.status(500).json({ error: 'Something went wrong.' });
+      res.status(500).json({ error: "Something went wrong." });
     }
   }
 });
@@ -322,14 +324,14 @@ recipesRouter.delete("/:id/attributes", async (req: Request, res: Response) => {
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       switch (error.code) {
-        case 'P2025':
-          res.status(404).json({ error: 'Attribute not found.' });
+        case "P2025":
+          res.status(404).json({ error: "Attribute not found." });
           break;
         default:
-          res.status(500).json({ error: 'Something went wrong.' });
+          res.status(500).json({ error: "Something went wrong." });
       }
     } else {
-      res.status(500).json({ error: 'Something went wrong.' });
+      res.status(500).json({ error: "Something went wrong." });
     }
   }
 });
@@ -359,9 +361,9 @@ recipesRouter.put("/:id/rate", async (req: Request, res: Response) => {
 
     await prisma.rating.upsert({
       where: {
-        recipeId_userId: {
-          recipeId: parseInt(id),
+        userId_recipeId: {
           userId: user.id,
+          recipeId: parseInt(id),
         },
       },
       create: {
@@ -388,14 +390,14 @@ recipesRouter.put("/:id/rate", async (req: Request, res: Response) => {
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       switch (error.code) {
-        case 'P2025':
-          res.status(404).json({ error: 'Recipe not found.' });
+        case "P2025":
+          res.status(404).json({ error: "Recipe not found." });
           break;
         default:
-          res.status(500).json({ error: 'Something went wrong.' });
+          res.status(500).json({ error: "Something went wrong." });
       }
     } else {
-      res.status(500).json({ error: 'Something went wrong.' });
+      res.status(500).json({ error: "Something went wrong." });
     }
   }
 });

@@ -19,20 +19,21 @@ attributesRouter.get("/:id", async (req: Request, res: Response) => {
           },
         },
       },
+      take: 10,
     });
 
     res.json(recipes);
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       // Handle Prisma known request errors
-      if (error.code === 'P2025') {
-        res.status(404).json({ error: 'Attribute not found' });
+      if (error.code === "P2025") {
+        res.status(404).json({ error: "Attribute not found" });
       } else {
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: "Internal server error" });
       }
     } else {
       // Handle other errors
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ error: "Internal server error" });
     }
   }
 });

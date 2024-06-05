@@ -19,6 +19,7 @@ ingredientsRouter.get("/:id", async (req: Request, res: Response) => {
           },
         },
       },
+      take: 10,
     });
 
     res.json(recipes);

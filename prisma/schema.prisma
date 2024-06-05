@@ -22,6 +22,7 @@ model User {
   recipes  Recipe[]
   ratings  Rating[]
 
+  @@index([token])
   @@map("users")
 }
 
@@ -82,6 +83,6 @@ model Rating {
   recipe      Recipe  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@id([recipeId, userId])
+  @@id([userId, recipeId])
   @@map("ratings")
 }
