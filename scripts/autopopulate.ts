@@ -13,6 +13,7 @@ const randomNumSet = (length: number, range: number) => {
   return Array.from(set);
 };
 
+//script to generate example data
 const autopopulateGenerated = async () => {
   await prisma.ingredient.createMany({
     data: [...new Set(recipes.flatMap((recipe) => recipe.ingredients))].map(
@@ -73,6 +74,7 @@ const autopopulateGenerated = async () => {
 
 autopopulateGenerated();
 
+//script to generate 1 million rows
 /*
 const autopopulateMillion = async () => {
   await prisma.ingredient.createMany({
