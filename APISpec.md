@@ -225,7 +225,7 @@ Adds a rating to a recipe. <br />
 ```
 
 ## Ingredients
-### `/ingredients/{id}` (GET)
+### `/ingredients/{name}` (GET)
 Get recipes associated with the given ingredient.  <br />
 
 **Response**:
@@ -242,7 +242,7 @@ Get recipes associated with the given ingredient.  <br />
 ```
 
 ## Attributes
-### `/attributes/{id}` (GET)
+### `/attributes/{name}` (GET)
 Gets recipes associated with the given attribute. <br />
 
 **Response**:

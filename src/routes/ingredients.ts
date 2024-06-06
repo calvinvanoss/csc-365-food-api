@@ -4,9 +4,9 @@ import express, { Request, Response } from "express";
 const ingredientsRouter = express.Router();
 const prisma = new PrismaClient();
 
-ingredientsRouter.get("/:id", async (req: Request, res: Response) => {
+ingredientsRouter.get("/:name", async (req: Request, res: Response) => {
   // #swagger.summary = 'get recipes associated with given ingredient'
-  const { id } = req.params;
+  const { name } = req.params;
 
   try {
     const recipes = await prisma.recipe.findMany({
@@ -14,7 +14,7 @@ ingredientsRouter.get("/:id", async (req: Request, res: Response) => {
         recipeIngredients: {
           some: {
             ingredient: {
-              id: parseInt(id),
+              name,
             },
           },
         },
