@@ -15,26 +15,26 @@ const randomNumSet = (length: number, range: number) => {
 
 //script to generate example data
 const autopopulateGenerated = async () => {
-  await prisma.ingredient.createMany({
-    data: [...new Set(recipes.flatMap((recipe) => recipe.ingredients))].map(
-      (ingredient) => ({ name: ingredient }),
-    ),
-  });
-  await prisma.attribute.createMany({
-    data: [...new Set(recipes.flatMap((recipe) => recipe.attributes))].map(
-      (attribute) => ({ name: attribute }),
-    ),
-  });
-  await prisma.user.createMany({
-    data: Array.from({ length: recipes.length }).map((_, idx) => ({
-      name: `user ${idx + 1}`,
-      password: "password",
-      token: `token ${idx + 1}`,
-    })),
-  });
-  await Promise.all(
-    recipes.map(async (recipe, idx) => {
-      await prisma.recipe.create({
+  await prisma.$transaction([
+    prisma.ingredient.createMany({
+      data: [...new Set(recipes.flatMap((recipe) => recipe.ingredients))].map(
+        (ingredient) => ({ name: ingredient }),
+      ),
+    }),
+    prisma.attribute.createMany({
+      data: [...new Set(recipes.flatMap((recipe) => recipe.attributes))].map(
+        (attribute) => ({ name: attribute }),
+      ),
+    }),
+    prisma.user.createMany({
+      data: Array.from({ length: recipes.length }).map((_, idx) => ({
+        name: `user ${idx + 1}`,
+        password: "password",
+        token: `token ${idx + 1}`,
+      })),
+    }),
+    ...recipes.map((recipe, idx) => {
+      return prisma.recipe.create({
         data: {
           name: recipe.name,
           instructions: "instructions",
@@ -60,16 +60,16 @@ const autopopulateGenerated = async () => {
         },
       });
     }),
-  );
-  await prisma.rating.createMany({
-    data: Array.from({ length: recipes.length }).flatMap((_, idx) =>
-      randomNumSet(10, recipes.length).map((recipeId) => ({
-        recipeId,
-        userId: idx + 1,
-        rating: faker.number.int({ min: 1, max: 5 }),
-      })),
-    ),
-  });
+    prisma.rating.createMany({
+      data: Array.from({ length: recipes.length }).flatMap((_, idx) =>
+        randomNumSet(10, recipes.length).map((recipeId) => ({
+          recipeId,
+          userId: idx + 1,
+          rating: faker.number.int({ min: 1, max: 5 }),
+        })),
+      ),
+    }),
+  ]);
 };
 
 autopopulateGenerated();
