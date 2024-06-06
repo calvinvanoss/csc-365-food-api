@@ -16,7 +16,8 @@ Create new user. <br />
 
 ```json
 {
-  "token": "string"
+  "token": "string",
+  "id": "integer"
 }
 ```
 ### `/users/login` (POST)
@@ -34,7 +35,8 @@ Login existing user. <br />
 
 ```json
 {
-  "token": "string"
+  "token": "string",
+  "id": "integer"
 }
 ```
 

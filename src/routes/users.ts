@@ -22,7 +22,10 @@ usersRouter.post("/signup", async (req: Request, res: Response) => {
         token: generateToken(name),
       },
     });
-    res.json({ token: user.token });
+    res.json({
+      token: user.token,
+      id: user.id,
+    });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
@@ -48,7 +51,10 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
       },
     });
 
-    res.json({ token: user.token });
+    res.json({
+      token: user.token,
+      id: user.id,
+    });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       res.status(400).json("Invalid username or password");

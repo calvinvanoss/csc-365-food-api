@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
+import { recipes } from "./exampleRecipes";
 
 const prisma = new PrismaClient();
 
@@ -12,7 +13,68 @@ const randomNumSet = (length: number, range: number) => {
   return Array.from(set);
 };
 
-const autopopulate = async () => {
+const autopopulateGenerated = async () => {
+  await prisma.ingredient.createMany({
+    data: [...new Set(recipes.flatMap((recipe) => recipe.ingredients))].map(
+      (ingredient) => ({ name: ingredient }),
+    ),
+  });
+  await prisma.attribute.createMany({
+    data: [...new Set(recipes.flatMap((recipe) => recipe.attributes))].map(
+      (attribute) => ({ name: attribute }),
+    ),
+  });
+  await prisma.user.createMany({
+    data: Array.from({ length: recipes.length }).map((_, idx) => ({
+      name: `user ${idx + 1}`,
+      password: "password",
+      token: `token ${idx + 1}`,
+    })),
+  });
+  await Promise.all(
+    recipes.map(async (recipe, idx) => {
+      await prisma.recipe.create({
+        data: {
+          name: recipe.name,
+          instructions: "instructions",
+          userId: idx + 1,
+          recipeIngredients: {
+            create: recipe.ingredients.map((ingredient) => ({
+              ingredient: {
+                connect: {
+                  name: ingredient,
+                },
+              },
+            })),
+          },
+          recipeAttributes: {
+            create: recipe.attributes.map((attribute) => ({
+              attribute: {
+                connect: {
+                  name: attribute,
+                },
+              },
+            })),
+          },
+        },
+      });
+    }),
+  );
+  await prisma.rating.createMany({
+    data: Array.from({ length: recipes.length }).flatMap((_, idx) =>
+      randomNumSet(10, recipes.length).map((recipeId) => ({
+        recipeId,
+        userId: idx + 1,
+        rating: faker.number.int({ min: 1, max: 5 }),
+      })),
+    ),
+  });
+};
+
+autopopulateGenerated();
+
+/*
+const autopopulateMillion = async () => {
   await prisma.ingredient.createMany({
     data: Array.from({ length: 100 }).map((_, idx) => ({
       name: `ingredient ${idx + 1}`,
@@ -78,4 +140,5 @@ const autopopulate = async () => {
   });
 };
 
-autopopulate();
+autopopulateMillion();
+*/
